@@ -7,7 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@qians/gen_header": "^1.0.0",
+    "axios": "^0.27.2",
     "core-js": "^3.8.3",
+    "cos-js-sdk-v5": "^1.4.1",
+    "element-ui": "^2.15.8",
+    "moment": "^2.29.4",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
@@ -17,6 +22,7 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "echarts": "^5.0.1",
     "vue-template-compiler": "^2.6.14"
   }
 }
