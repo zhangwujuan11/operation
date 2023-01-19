@@ -49,12 +49,8 @@
 						id: 1,
 						name: '首页',
 						path: '/home'
-					},
-					{
-						id: 2,
-						name: '审核认证',
-						path: '/home/adminCenter/examine/index'
-					},
+					}
+					
 				],
 				activeColor: '#278DE5'
 			}
@@ -103,7 +99,7 @@
 		width: 80%;
 		height: 72px;
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-between;		
 		align-items: center;
 	}
 

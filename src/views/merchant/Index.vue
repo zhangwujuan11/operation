@@ -85,13 +85,7 @@
 		},
 		data(){
 			return{
-				options: [{
-				  value:1,
-				  label: '启用'
-				}, {
-				  value: 0,
-				  label: '停用'
-				}],
+				options: [],
 				myfrom:{
 					appId: '',
 					appName:'',

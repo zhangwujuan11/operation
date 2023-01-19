@@ -3,7 +3,6 @@ import axios from 'axios'
 
 // 用户名获取itoken
 export function iToken(){
-	// console.log(JSON.parse(localStorage.getItem('user')).username)
 	return request({
 		url:'/mgr/anon/auth/validate',
 		method:'POST',

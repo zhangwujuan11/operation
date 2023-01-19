@@ -116,6 +116,96 @@ const routes = [
 		}
   	]
   },
+  // 商户配置
+  {
+	 path: '/mchinfos/index',
+	 component: {
+	 	render: (e) => e("router-view")
+	 }, 
+	 children:[
+		 {	//商户信息
+		 	path:'',
+		 	name: 'mchinfo',
+		 	component: () => import('@/views/mchinfos/Index.vue')
+		 },
+		 {	//码牌信息
+		 	path:'/mchinfos/cc',
+		 	name: 'cc',
+		 	component: () => import('@/views/mchinfos/Cc.vue')
+		 },
+		 {	//音箱信息
+		 	path:'/mchinfos/tc',
+		 	name: 'tc',
+		 	component: () => import('@/views/mchinfos/Tc.vue')
+		 },
+		 {	//渠道信息
+		 	path:'/mchinfos/channle',
+		 	name: 'channle',
+		 	component: () => import('@/views/mchinfos/Channle.vue')
+		 },
+		 {	//收益定义
+		 	path:'/mchinfos/benefi',
+		 	name: 'benefi',
+		 	component: () => import('@/views/mchinfos/Benefi.vue')
+		 }
+	 ]
+  },
+  {//服务商列表
+	  path:'/details',
+	  name: 'details',
+	  component: () => import('@/views/details/Index.vue')
+  },
+  {	//服务商收益定义
+  	path:'/mchinfos/benefitdefinition',
+  	name: 'benefitdefinition',
+  	component: () => import('@/views/details/Benefitdefinition.vue')
+  },
+  {	//流水明细
+  	path:'/serviceprovider/share',
+  	name: 'share',
+  	component: () => import('@/views/serviceprovider/Share.vue')
+  },
+  
+  
+  // 银联信息配置
+  // {
+  //   path: '/mchinfo/index',
+  // 	component: {
+  // 		render: (e) => e("router-view")
+  // 	},
+  // 	children:[
+  // 		{	//商户信息
+  // 			path:'',
+  // 			name: 'mchinfo',
+  // 			component: () => import('@/views/mchinfo/Index.vue')
+  // 		},
+		// {	//音箱信息
+		// 	path:'/mchinfo/tc',
+		// 	name: 'tc',
+		// 	component: () => import('@/views/mchinfo/Tc.vue')
+		// },
+		// {	//码牌信息
+		// 	path:'/mchinfo/cc',
+		// 	name: 'cc',
+		// 	component: () => import('@/views/mchinfo/Cc.vue')
+		// },
+		// {
+		// 	path:'/mchinfo/indextable',
+		// 	name: 'indextable',
+		// 	component: () => import('@/views/mchinfo/Indextable.vue')
+		// },
+		// {
+		// 	path:'/mchinfo/tctable',
+		// 	name: 'tctable',
+		// 	component: () => import('@/views/mchinfo/Tctable.vue')
+		// },
+		// {	
+		// 	path:'/mchinfo/cctable',
+		// 	name: 'cctable',
+		// 	component: () => import('@/views/mchinfo/Cctable.vue')
+		// }
+  // 	]
+  // },
   {
 	  path:'/register',
 	  name:'register',

@@ -11,13 +11,13 @@ const server = axios.create({
 // 请求拦截器
 server.interceptors.request.use(
 	config => {
-		let token = JSON.parse(localStorage.getItem('iToken'))
+		// let token = JSON.parse(localStorage.getItem('iToken'))
 		config.headers['Accept'] = 'application/json'
 		config.headers['x-requested-with'] = 'XMLHttpRequest'
 		config.headers['Access-Control-Allow-Origin'] = "*"  
-		if (!config.headers.hasOwnProperty('iToken') && token) {
-			config.headers.iToken=token
-		}
+		// if (!config.headers.hasOwnProperty('iToken') && token) {
+		// 	config.headers.iToken=token
+		// }
 		return config
 	}, error => {
 		Promise.reject(error)
@@ -26,13 +26,14 @@ server.interceptors.request.use(
 
 //响应拦截
 server.interceptors.response.use(response => {
-	if (response.data.code == 5000101) {
-		return iToken().then(res=>{
-			localStorage.setItem('iToken',JSON.stringify(res.data.data.iToken))
-		})
-	    } else {
-	     return response
-	    }
+	// if (response.data.code == 5000101) {
+	// 	return iToken().then(res=>{
+	// 		localStorage.setItem('iToken',JSON.stringify(res.data.data.iToken))
+	// 	})
+	//     } else {
+	//      return response
+	//     }
+		 return response
 	
 },
   error => {

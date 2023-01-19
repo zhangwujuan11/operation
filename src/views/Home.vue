@@ -111,9 +111,9 @@
 				})
 				
 				
-				import('@qians/gen_header/gen_header.js').then((res) => {
-				        console.log(res)
-				      })
+				// import('@qians/gen_header/gen_header.js').then((res) => {
+				//         console.log(res)
+				//       })
 				
 		},
 		methods:{

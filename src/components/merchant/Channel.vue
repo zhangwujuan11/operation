@@ -40,7 +40,6 @@
 			
 		    methods: {
 		      submitForm(formName) {
-		        console.log(this.ruleForm)
 				this.payData(this.ruleForm)
 		      },
 		      resetForm(formName) {

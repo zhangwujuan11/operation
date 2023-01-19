@@ -105,3 +105,172 @@ export function infomch(data){
 		data
 	})
 }
+
+
+// 新建服务商
+export function isvcreat(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/create',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "isv_info",
+			"data": [data]
+		}
+	})
+}
+// 所属服务商(未停用)
+export function isvc(){
+	 return axios({
+	 	url: 'https://1to2to3.cn/rds2/service/query',
+	 	method: 'post',
+	 	data: {
+	 		"auth": 2,
+	 		"project": "umsPay",
+	 		"table": "isv_info",
+	 		"conditions": {
+	 			"fields": [],
+	 			"query": {
+	 				"and": [{
+						"match":{
+							"state":1
+						}
+	 				}]
+	 			}
+	 		}
+	 	}
+	 })
+}
+//所属服务商所有
+export function isvcall(){
+	 return axios({
+	 	url: 'https://1to2to3.cn/rds2/service/query',
+	 	method: 'post',
+	 	data: {
+	 		"auth": 2,
+	 		"project": "umsPay",
+	 		"table": "isv_info",
+	 		"conditions": {
+	 			"fields": [],
+	 			"query": {
+	 				"and": [{
+						"match":{
+							
+						}
+	 				}]
+	 			}
+	 		}
+	 	}
+	 })
+}
+// 精准所属服务商查询
+export function isvcserch(data){
+	 return axios({
+	 	url: 'https://1to2to3.cn/rds2/service/query',
+	 	method: 'post',
+	 	data: {
+	 		"auth": 2,
+	 		"project": "umsPay",
+	 		"table": "isv_info",
+	 		"conditions": {
+	 			"fields": [],
+	 			"query": {
+	 				"and": [{
+	 					"match":{
+	 						"isv_no":data
+	 					}
+	 				}]
+	 			}
+	 		}
+	 	}
+	 })
+}
+// 精准所属服务商查询
+export function isvcupdata(data){
+	 return axios({
+	 	url: 'https://1to2to3.cn/rds2/service/update-by-query',
+	 	method: 'post',
+	 	data:{
+	 			"auth": 2,
+	 			"project": "umsPay",
+	 			"table": "isv_info",
+	 			"query": {
+	 				"and": [
+	 					{
+	 						"match": {
+	 							"isv_no":data.isv_no,
+	 							}
+	 					}
+	 				]
+	 			},
+	 			"data": data
+	 		}
+	 })
+}
+
+// 一级服务商查询
+export function isvlevelno(data){
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/query',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "isv_info",
+			"conditions": {
+				"fields": [],
+				"query": {
+					"and": [{
+						"match":{
+							"isv_level":1
+						}
+					}]
+				}
+			}
+		}
+	})
+}
+
+// 服务商等级
+export function levels(){
+	 return axios({
+	 	url: 'https://1to2to3.cn/rds2/service/query',
+	 	method: 'post',
+	 	data: {
+	 		"auth": 2,
+	 		"project": "umsPay",
+	 		"table": "op_isv_level",
+	 		"conditions": {
+	 			"fields": [],
+	 			"query": {
+	 				"and": [{
+	 				}]
+	 			}
+	 		}
+	 	}
+	 })
+}
+
+// 服务商收益修改
+export function isvyielddata(data){
+	 return axios({
+	 	url: 'https://1to2to3.cn/rds2/service/update-by-query',
+	 	method: 'post',
+	 	data:{
+	 			"auth": 2,
+	 			"project": "umsPay",
+	 			"table": "isv_yield_info",
+	 			"query": {
+	 				"and": [
+	 					{
+	 						"match": {
+	 							"isv_no":data.isv_no,
+	 							}
+	 					}
+	 				]
+	 			},
+	 			"data": data
+	 		}
+	 })
+}

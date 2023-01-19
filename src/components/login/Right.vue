@@ -34,12 +34,14 @@
 
 <script>
 	import {goLogin} from '@/utils/login.js'
+	import {iToken} from '@/utils/home.js'
 	export default{
+		inject:["reload"],
 		data(){
 			return{
-				havetoken:null,
-				// username:JSON.parse(localStorage.getItem('user')).username,
+				havetoken:null ,
 				dialogVisible: false,
+				username:'',
 				ruleForm: {
 					grant_type:'password',
 					username: '',
@@ -62,8 +64,8 @@
 			}
 		},
 		created() {
-			this.havetoken=localStorage.getItem('user')
-			// console.log(localStorage.getItem('user'))
+			this.havetoken=JSON.parse(localStorage.getItem('user'))
+			this.username=JSON.parse(localStorage.getItem('user')).username
 		},
 		methods:{
 			// 注册
@@ -80,13 +82,22 @@
 							if(res.data.code==400){
 								this.$message.error(res.data.message)
 							}else{
-								this.$message.success("登录成功")
 								let userinfo={
 									token:res.data.access_token,
 									username:this.ruleForm.username
 								}
 								localStorage.setItem('user',JSON.stringify(userinfo))
-								this.$router.push('/home')
+								this.$nextTick(()=>{
+									iToken().then(ress=>{
+										let isadmin=ress.data.data.sysUser.isAdmin
+										localStorage.setItem('isadmin',JSON.stringify(ress.data.data.sysUser.isAdmin))
+										this.$message.success("登录成功")
+										this.$router.push('/home')
+									}).catch(()=>{
+										this.$message.error("登录失败，请重试！")
+									})
+								})
+								
 							}
 						})
 					} else {
@@ -98,7 +109,8 @@
 			// 退出
 			logout(){
 				localStorage.removeItem('user')
-				localStorage.removeItem('iToken')
+				localStorage.removeItem('isadmin')
+				this.reload()
 			}
 		}
 	}

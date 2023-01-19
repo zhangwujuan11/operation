@@ -43,7 +43,7 @@
 				<el-table-column prop="tel" label="状态">
 					<template slot-scope="scope">
 						{{scope.row.state | state}}
-					</template>>
+					</template>
 				</el-table-column>
 				<el-table-column prop="createdAt" label="创建时间">
 				</el-table-column>

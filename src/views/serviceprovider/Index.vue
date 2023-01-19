@@ -33,14 +33,14 @@
 				<el-form :model="ruleForm"  :rules="rules" ref="ruleForm"
 					label-width="100px" class="demo-ruleForm">
 					<div class="chendiv">
-						<el-form-item label="服务商名称" prop="isvName">
-							<el-input type="text" v-model="ruleForm.isvName" placeholder='输入服务商名称'></el-input>
+						<el-form-item label="服务商名称" prop="isv_name">
+							<el-input type="text" v-model="ruleForm.isv_name" placeholder='输入商户名称'></el-input>
 						</el-form-item>
-						<el-form-item label="服务商简称" prop="isvShortName">
-							<el-input type="text" v-model="ruleForm.isvShortName" placeholder='输入服务商简称'></el-input>
+						<el-form-item label="服务商简称" prop="isv_short_name">
+							<el-input type="text" v-model="ruleForm.isv_short_name" placeholder='输入商户简称'></el-input>
 						</el-form-item>
-						<el-form-item label="联系人手机号" prop="contactTel">
-							<el-input type="text" v-model="ruleForm.contactTel" placeholder='输入联系人手机号'></el-input>
+						<el-form-item label="联系人手机号" prop="contact_tel">
+							<el-input type="text" v-model="ruleForm.contact_tel" placeholder='输入联系人手机号'></el-input>
 						</el-form-item>
 						<el-form-item label="备注" prop="remark">
 							<el-input type="textarea" :rows="2" placeholder="请输入备注信息" v-model="ruleForm.remark">
@@ -54,16 +54,36 @@
 								<el-radio :label="1">启用</el-radio>
 							</el-radio-group>
 						</el-form-item>
-						<el-form-item label="联系人姓名" prop="contactName">
-							<el-input type="text" v-model="ruleForm.contactName" placeholder='输入联系人姓名'></el-input>
+						<el-form-item label="联系人姓名" prop="contact_name">
+							<el-input type="text" v-model="ruleForm.contact_name" placeholder='输入联系人姓名'></el-input>
 						</el-form-item>
-						<el-form-item label="联系人邮箱" prop="contactEmail">
-							<el-input type="text" v-model="ruleForm.contactEmail" placeholder='输入联系人邮箱'></el-input>
+						<el-form-item label="联系人邮箱" prop="contact_email">
+							<el-input type="text" v-model="ruleForm.contact_email" placeholder='输入联系人邮箱'></el-input>
 						</el-form-item>
+						<el-form-item label="等级" prop="isv_level">
+							<el-select placeholder="等级" v-model="ruleForm.isv_level">
+							    <el-option
+							      v-for="(item,index) in levels"
+							      :key="index"
+							      :label="item.isv_level_name"
+							      :value="item.isv_level">
+							    </el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item v-if="ruleForm.isv_level == 2" label="服务商隶属" prop="isv_vassalage">
+							<el-select placeholder="服务商隶属" v-model="ruleForm.isv_vassalage">
+							    <el-option
+							      v-for="(item,index) in vassalage"
+							      :key="index"
+							      :label="item.contact_name"
+							      :value="item.isv_no">
+							    </el-option>
+							</el-select>
+						</el-form-item>
+						
 					</div>
 					<div class="btnbox">
 						<el-form-item>
-							<el-button>取消</el-button>
 							<el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
 						</el-form-item>
 					</div>
@@ -77,6 +97,7 @@
 	import Travelpermit from '@/components/Travelpermit.vue'
 	import Table from '@/components/serviceprovider/Indextable.vue'
 	import {isvInfo,addisvInfo} from '@/utils/serviceprovider.js'
+	import {isvcreat,levels,isvlevelno} from '@/utils/merchant.js'
 	export default{
 		inject:["reload"],
 		components:{
@@ -86,16 +107,16 @@
 		data(){
 			
 			// 表单校验
-			var validateValue = async(rule, value, callback) => {
-				let reg=/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
-				if(!reg.test(this.ruleForm.contactEmail) && this.ruleForm.contactEmail != ''){
-				  callback(new Error('请输入正确的邮箱'))
+			var validateValue = async (rule, value, callback) => {
+				let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+				if (!reg.test(this.ruleForm.contact_email) && this.ruleForm.contactEmail != '') {
+					callback(new Error('请输入正确的邮箱'))
 				}
 			}
-			var validateTel = async(rule, value, callback) => {
-				let reg=/^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/
-				if(!reg.test(this.ruleForm.contactTel)  && this.ruleForm.contactEmail != ''){
-				  callback(new Error('请输入正确的电话号码'))
+			var validateTel = async (rule, value, callback) => {
+				let reg = /^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/
+				if (!reg.test(this.ruleForm.contact_tel) && this.ruleForm.contactTel != '') {
+					callback(new Error('请正确填写手机号'))
 				}
 			}
 			return{
@@ -109,37 +130,84 @@
 				value:'',
 				dialogVisible:false,
 				ruleForm: {
-					isvName:'',
 					state:1,
-					isvShortName:'',
-					contactName:'',
-					contactTel:'',
-					contactEmail:'',
-					remark:''
 				},
 				rules: {
-					contactEmail:[{validator: validateValue, trigger: 'blur' }],
-					contactTel:[{validator:validateTel,message: '请输入联系人电话',trigger: 'blur'}],
-					isvName:[{required: true,message: '请输入服务商名称',trigger: 'blur'}],
-					isvShortName:[{required: true,message: '请输入服务商简称',trigger: 'blur'}],
+					isv_name: [{
+						required: true,
+						message: '请输入服务商名称',
+						trigger: 'blur'
+					}],
+					isv_short_name: [{
+						required: true,
+						message: '请输入服务商简称',
+						trigger: 'blur'
+					}],
+					contact_tel: [{
+						required: true,
+						validator: validateTel,
+						trigger: 'blur'
+					}],
+					contact_email: [{
+						required: true,
+						validator: validateValue,
+						trigger: 'blur'
+					}],
+					contact_name: [{
+						required: true,
+						message: '请输入联系人姓名',
+						trigger: 'blur'
+					}],
+					isv_level:[{
+						required: true,
+						message: '请选择等级',
+						trigger: 'blur'
+					}],
+					isv_vassalage:[{
+						required: true,
+						message: '请选择服务商隶属',
+						trigger: 'blur'
+					}],
 				},
 				myForm:{
 					state:null,
 					isvNo:'',
 					isvName:''
-				}
+				},
+				levels:[],
+				vassalage:[]
 			}
 		},
 		created(){
-			
+			levels().then(res=>{
+				this.levels=res.data.data
+				// console.log(res.data.data)
+			})
+			isvlevelno().then(res=>{
+				this.vassalage=res.data.data
+			})
 		},
 		methods:{
+			sjsz(num){
+			      var ary = [];                    //创建一个空数组用来保存随机数组
+			     for(var i=0; i<num; i++){            //按照正常排序填充数组
+			         ary[i] = i+1;
+			     }
+			     ary.sort(function(){
+			          return 0.5-Math.random();        //返回随机正负值
+			      })
+			     return ary;                    //返回数组
+			 },
+			
 			// 提交新建
 			 submitForm(formName) {
 			        this.$refs[formName].validate((valid) => {
 			          if (valid) {
-			            addisvInfo(this.ruleForm).then(res=>{
-							this.$message.success(res.data.msg);
+						  let numsui=this.sjsz(9).join('')  
+							this.ruleForm.isv_no='V' + numsui
+						
+			            isvcreat(this.ruleForm).then(res=>{
+							this.$message.success("新建成功");
 							this.reload()
 			            })
 			          } else {
