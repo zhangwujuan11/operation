@@ -7,7 +7,7 @@
 		</Travelpermit>
 		<div class="infobox">
 			<div class="inputBox">
-				<el-form :model="myfrom" ref="myfrom" class="demo-ruleForm">
+				<!-- <el-form :model="myfrom" ref="myfrom" class="demo-ruleForm">
 					<el-form-item>
 						<el-input placeholder="输入应用APPID" v-model="myfrom.appId"></el-input>
 					</el-form-item>
@@ -29,7 +29,10 @@
 					<el-button @click="resetForm()">重置</el-button>
 					<el-button type="primary" @click="dialogVisible=true">新建</el-button>
 				</div>
-				</el-form>
+				</el-form> -->
+				<div class="btnbox">
+					<el-button type="primary" @click="dialogVisible=true">新建</el-button>
+				</div>
 			</div>
 			
 			<Table></Table>
@@ -111,13 +114,13 @@
 				min = min < 10 ? ('0' + min) : min;
 				var s = date.getSeconds();
 				s = s < 10 ? ('0' + s) : s;
-				this.conversion_time1 = y + '-' + m + '-' + d + ' ' + h + ':' + min + ':'             
+				this.conversion_time1 = y + '-' + m + '-' + d + ' ' + h + ':' + min + ':'
 				+ s;
 			},
-			submitForm(formName) {
+			submitForm(formName){
 				this.gettime()
-				this.$refs[formName].validate((valid) => {
-					if (valid) {
+				this.$refs[formName].validate((valid) =>{
+					if(valid){
 						tcinfoserch(this.ruleForm.deviceId).then(data=>{
 							// console.log(data.data.data)
 							if(data.data.data.length == 0){
@@ -131,14 +134,14 @@
 								this.$message.error('该设备已存在')
 							}
 						})
-					} else {
+					}else{
 						console.log('error submit!!');
 						return false;
 					}
 				});
 			},
 			// 重置
-			 resetForm() {
+			 resetForm(){
 					 Object.assign(this.$data.myfrom, this.$options.data().myfrom)
 			      },
 			  // 生成私钥

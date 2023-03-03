@@ -36,6 +36,15 @@ export function overdue(){
   })
 }
 
+// 解析token
+export function analysistoken(){
+  return axios({
+    url:'https://1to2to3.cn/super-login/sys/me',
+    method:'post',
+    headers:{Authorization:'bearer'+ JSON.parse(localStorage.getItem('user')).token}
+  })
+}
+
 
 // 通过手机号获取用户名称
 export function charkname(data){
@@ -127,7 +136,7 @@ export function mahinfoserchall(data) {
 			"table": "pay_mch_info",
 			"conditions": {
 				"pagination": {
-					"page": data,
+					"page": data.page,
 					"pageSize":8
 				},
 				"fields": [],
@@ -143,9 +152,37 @@ export function mahinfoserchall(data) {
 		}
 	})
 }
+export function mahinfoserch(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/query',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "pay_mch_info",
+			"conditions": {
+				"pagination": {
+					"page": data.page,
+					"pageSize":8
+				},
+				"fields": [],
+				"query": {
+					"and": [{
+						"match": {
+							"isDel": 0,
+							"isvNo":data.isv
+						}
+					}]
+				}
+
+			}
+		}
+	})
+}
 
 //修改
 export function resetlevtas(data){
+	console.log(data)
 	return axios({
 		url:'https://1to2to3.cn/rds2/service/update-by-query',
 		method:'post',
@@ -157,8 +194,7 @@ export function resetlevtas(data){
 					"and": [
 						{
 							"match": {
-								"username": data.username,
-								"channelId": data.channelId
+								"pId": data.pId
 								},
 						}
 					]
@@ -199,8 +235,7 @@ export function dellevtas(data){
 					"and": [
 						{
 							"match": {
-								"username": data.username,
-								"channelId": data.channelId
+								"pId": data.pId
 								},
 						}
 					]

@@ -52,7 +52,7 @@
 			const validateEmail = (rule, value, callback) => {
 				const patten =
 					/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
-				if (!patten.test(value)) {
+				if (!patten.test(value) && value != ''){
 					callback(new Error('请输入正确的邮箱地址'))
 				}
 				callback()
@@ -114,7 +114,7 @@
 					"email": "",
 					"phone": "",
 					"checkPass": '',
-					"vcodeText":'',
+					"vcodeText":'123',
 				},
 
 				rules: {

@@ -33,6 +33,8 @@
 						accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 						<el-button type="primary">导入</el-button>
 					</el-upload>
+					<el-button v-if="isadmin==1" class="button" style="width:150px;" :disabled="issend" @click="binPH" type="primary">{{countDown}}</el-button>
+					<!-- <el-button  @click="gocount">计算</el-button> -->
 				</div>
 			</div>
 
@@ -71,6 +73,7 @@
 <script>
 	import Table from '@/components/details/Indextable.vue'
 	import {excalcreat,excalquery,exqueryall} from '@/utils/login.js'
+	import {gocont} from '@/utils/serviceprovider.js'
 	import { Loading } from 'element-ui';
 	export default {
 		inject: ["reload"],
@@ -82,7 +85,12 @@
 				myfrom: {
 					monthdata:''
 				},
-				tableData:[]
+				tableData:[],
+				teltru:false,
+				countDown: '计算',
+				countdown: 60,
+				issend:false,
+				isadmin:JSON.parse(localStorage.getItem('isadmin')) 
 			}
 		},
 		created() {
@@ -219,7 +227,34 @@
 					path: '/details',
 					query: n
 				})
-			}
+			},
+			loading(){
+			     //启动定时器
+			     this.issend=true
+			     this.countdown--; //定时器减1
+			     this.countDown = "重新计算（" + this.countdown +"）";
+			    },
+			clearTimer(){
+			   //清除定时器
+			   clearInterval(this.timer);
+			   this.timer = null;
+			},
+			binPH(){
+			      this.teltru=false
+			      this.loading()
+			    gocont()
+			      this.timer = setInterval(() => {
+			        //创建定时器
+			        if(this.countdown == 0){
+			            this.issend=false
+			             this.clearTimer(); //关闭定时器
+			             this.countDown="计算"
+			             this.countdown=60
+			        }else{
+			           this.loading();
+			        }
+			      },1000)
+			},
 		}
 	}
 </script>

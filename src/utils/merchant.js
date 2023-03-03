@@ -107,19 +107,7 @@ export function infomch(data){
 }
 
 
-// 新建服务商
-export function isvcreat(data) {
-	return axios({
-		url: 'https://1to2to3.cn/rds2/service/create',
-		method: 'post',
-		data: {
-			"auth": 2,
-			"project": "umsPay",
-			"table": "isv_info",
-			"data": [data]
-		}
-	})
-}
+
 // 所属服务商(未停用)
 export function isvc(){
 	 return axios({
@@ -156,7 +144,7 @@ export function isvcall(){
 	 			"query": {
 	 				"and": [{
 						"match":{
-							
+							"is_admin":0
 						}
 	 				}]
 	 			}
@@ -273,4 +261,48 @@ export function isvyielddata(data){
 	 			"data": data
 	 		}
 	 })
+}
+
+
+
+
+// 新建服务商流程
+// 1.根据手机号查询服务商是否存在
+export function isvlist(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/query',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "isv_info",
+			"conditions": {
+				"fields": [],
+				"query": {
+					"and": [{
+						"match":{
+							"contact_tel":data
+						}
+					}]
+				}
+			}
+		}
+	})
+}
+
+
+
+
+// 服务商基础表添加
+export function isvcreat(data) {
+	return axios({
+		url: 'https://1to2to3.cn/rds2/service/create',
+		method: 'post',
+		data: {
+			"auth": 2,
+			"project": "umsPay",
+			"table": "isv_info",
+			"data": [data]
+		}
+	})
 }

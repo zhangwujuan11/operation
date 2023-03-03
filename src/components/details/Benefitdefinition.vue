@@ -4,7 +4,10 @@
 			style="width:100%;padding-bottom: 2.6rem;">
 			<el-table-column prop="isv_no" label="服务商名称"  :formatter="sfktHouse">
 			</el-table-column>
-			<el-table-column prop="yield_id" label="收益百分比" :formatter="yiddld">
+			<el-table-column prop="percentage" label="收益百分比" >
+				<template slot-scope="scope" class="rebox">
+					{{scope.row.percentage + '%'}}
+				</template>
 			</el-table-column>
 			<el-table-column prop="create_at" label="创建时间">
 			</el-table-column>
@@ -26,10 +29,11 @@
 							<el-option v-for="(item,index) in isv" :key="index" :label="item.isv_name" :value="item.isv_no"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item label="收益百分比:" prop="yield_id">
-						<el-select v-model="ruleForm.yield_id" placeholder="请选择百分比">
+					<el-form-item label="收益百分比:" prop="percentage">
+						<!-- <el-select v-model="ruleForm.yield_id" placeholder="请选择百分比">
 							<el-option v-for="(item,index) in options" :key="index" :label="item.percentage + '%'" :value="item.yield_id"></el-option>
-						</el-select>
+						</el-select> -->
+						<el-input placeholder="输入百分比" v-model="ruleForm.percentage"></el-input>% 
 					</el-form-item>
 					 <p class="btn_box">
 						 <el-button type="primary" @click="submitForm('ruleForm')">立即修改</el-button>
@@ -113,13 +117,13 @@
 					}
 				}
 			},
-			yiddld(row, index){
-				for(var i=0;i<this.options.length;i++){
-					if(row.yield_id == this.options[i].yield_id){
-						return this.options[i].percentage + '%'
-					}
-				}
-			},
+			// yiddld(row, index){
+			// 	for(var i=0;i<this.options.length;i++){
+			// 		if(row.yield_id == this.options[i].yield_id){
+			// 			return this.options[i].percentage + '%'
+			// 		}
+			// 	}
+			// },
 			// 修改
 			open(n) {
 				this.dialogVisible=true

@@ -61,7 +61,8 @@
 			// 退出
 			logout(){
 				localStorage.removeItem('user')
-				localStorage.removeItem('iToken')
+				localStorage.removeItem('isadmin')
+				localStorage.removeItem('isv-no')
 				this.$router.push('/login')
 			}
 		}

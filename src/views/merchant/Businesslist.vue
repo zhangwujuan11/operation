@@ -6,36 +6,25 @@
 			</div>
 		</Travelpermit>
 		<div class="infobox">
-			<div class="inputBox">
+			<!-- <div class="inputBox">
 				<el-form :model="myfrom" ref="myfrom" class="demo-ruleForm">
-					<el-input placeholder="商户号" v-model="myfrom.mchNo"></el-input>
-					<el-input placeholder="服务商号" v-model="myfrom.isvNo"></el-input>
-					<el-input placeholder="商户名称" v-model="myfrom.mchName"></el-input>
-					<!-- <el-select v-model="myfrom.state" placeholder="商户状态">
-				    <el-option
-				      v-for="item in options"
-				      :key="item.value"
-				      :label="item.label"
-				      :value="item.value">
-				    </el-option>
-				  </el-select>
-				  <el-select v-model="myfrom.type" placeholder="商户类型">
-				     <el-option
-				       v-for="item in options2"
-				       :key="item.value"
-				       :label="item.label"
-				       :value="item.value">
-				     </el-option>
-				   </el-select> -->
+					<el-input placeholder="商户号/商户名称" v-model="myfrom.is"></el-input>
 				</el-form>
-			</div>
+			</div> -->
 			<div class="btnbox">
+				<!-- <el-button type="primary" @click="serchcoed(myfrom)">查询</el-button> -->
+				<!-- <el-button @click="resetForm()">重置</el-button> -->
+				<el-button type="primary" @click="dialogVisible=true">新建</el-button>
+			</div>
+			<!-- <div class="btnbox">
 				<el-button type="primary" @click="serchcoed(myfrom)">查询</el-button>
 				<el-button @click="resetForm()">重置</el-button>
 				<el-button type="primary" @click="dialogVisible=true">新建</el-button>
-			</div>
+			</div> -->
 			<Table :channel="channel" :ccdatas="ccdatas" :tcinfodata="tcinfodata" :isvs="isvs"></Table>
 		</div>
+		
+		
 		<!-- 蒙尘 -->
 		<el-dialog title="商户绑定" append-to-body :visible.sync="dialogVisible" width="50%">
 			<div class="chen">
@@ -216,11 +205,6 @@
 						required: true,
 						message: '请选择所属服务商',
 						trigger: 'change' 
-					}],
-					username:[{
-						required: true,
-						message: '请输入商户登录名',
-						trigger: 'bule' 
 					}]
 				},
 				activeName: 'first',
@@ -238,11 +222,7 @@
 				// merchantCode:JSON.parse(localStorage.getItem("mchtiddata")).merchantCode,
 				// username:JSON.parse(localStorage.getItem("username")),
 				myfrom: {
-					mchNo: '',
-					isvNo: '',
-					mchName: '',
-					state: null,
-					type: null
+					is:''
 				},
 				isvs: [],
 				dialogVisible: false,

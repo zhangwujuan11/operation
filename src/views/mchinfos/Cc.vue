@@ -7,7 +7,7 @@
 		</Travelpermit>
 		<div class="infobox">
 			<div class="inputBox">
-				<el-form :model="myfrom" ref="myfrom" class="demo-ruleForm">
+				<!-- <el-form :model="myfrom" ref="myfrom" class="demo-ruleForm">
 					<el-form-item>
 						<el-input placeholder="输入应用APPID" v-model="myfrom.appId"></el-input>
 					</el-form-item>
@@ -29,7 +29,10 @@
 					<el-button @click="resetForm()">重置</el-button>
 					<el-button type="primary" @click="dialogVisible=true">新建</el-button>
 				</div>
-				</el-form>
+				</el-form> -->
+				<div class="btnbox">
+					<el-button type="primary" @click="dialogVisible=true">新建</el-button>
+				</div>
 			</div>
 			
 			<Table></Table>

@@ -165,7 +165,16 @@ const routes = [
   	name: 'share',
   	component: () => import('@/views/serviceprovider/Share.vue')
   },
-  
+  {	//分润展示
+  	path:'/serviceprovider/exhibition',
+  	name: 'exhibition',
+  	component: () => import('@/views/serviceprovider/Exhibition.vue')
+  },
+  {	//分润提现
+  	path:'/details/cash',
+  	name: 'cash',
+  	component: () => import('@/views/details/Cash.vue')
+  },
   
   // 银联信息配置
   // {

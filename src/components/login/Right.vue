@@ -33,8 +33,9 @@
 </template>
 
 <script>
-	import {goLogin} from '@/utils/login.js'
+	import {goLogin,analysistoken} from '@/utils/login.js'
 	import {iToken} from '@/utils/home.js'
+	import {isvlist} from '@/utils/merchant.js'
 	export default{
 		inject:["reload"],
 		data(){
@@ -88,14 +89,28 @@
 								}
 								localStorage.setItem('user',JSON.stringify(userinfo))
 								this.$nextTick(()=>{
-									iToken().then(ress=>{
-										let isadmin=ress.data.data.sysUser.isAdmin
-										localStorage.setItem('isadmin',JSON.stringify(ress.data.data.sysUser.isAdmin))
-										this.$message.success("登录成功")
-										this.$router.push('/home')
-									}).catch(()=>{
-										this.$message.error("登录失败，请重试！")
+									analysistoken().then(ress=>{
+										let isvphone=ress.data.principal.user.phone
+										isvlist(isvphone).then(redata=>{
+											if(redata.data.data.length == 0){
+												this.$message.error("服务商信息未绑定")
+												this.logout()
+											}else{
+												localStorage.setItem('isv-no',JSON.stringify(redata.data.data[0].isv_no))
+												localStorage.setItem('isadmin',JSON.stringify(redata.data.data[0].is_admin))
+												this.$message.success("登录成功")
+												this.$router.push('/home')
+											}
+										})
 									})
+									// iToken().then(ress=>{
+									// 	let isadmin=ress.data.data.sysUser.isAdmin
+									// 	localStorage.setItem('isadmin',JSON.stringify(ress.data.data.sysUser.isAdmin))
+									// 	this.$message.success("登录成功")
+									// 	this.$router.push('/home')
+									// }).catch(()=>{
+									// 	this.$message.error("登录失败，请重试！")
+									// })
 								})
 								
 							}
@@ -110,6 +125,8 @@
 			logout(){
 				localStorage.removeItem('user')
 				localStorage.removeItem('isadmin')
+				localStorage.removeItem('isv-no')
+				
 				this.reload()
 			}
 		}

@@ -36,10 +36,11 @@
 							<el-option v-for="(item,index) in isv" :key="index" :label="item.isv_name" :value="item.isv_no"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item label="收益百分比:" prop="yield_id">
-						<el-select v-model="ruleForm.yield_id" placeholder="请选择百分比">
+					<el-form-item label="收益百分比:" prop="percentage">
+						<!-- <el-select v-model="ruleForm.percentage" placeholder="请选择百分比">
 							<el-option v-for="(item,index) in options" :key="index" :label="item.percentage + '%'" :value="item.yield_id"></el-option>
-						</el-select>
+						</el-select> -->
+						<el-input placeholder="输入百分比" v-model="ruleForm.percentage"></el-input>% 
 					</el-form-item>
 					 <p class="btn_box">
 						 <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -74,7 +75,7 @@
 						message: '请选择商户',
 						trigger: 'blur'
 					}],
-					yield_id: [{
+					percentage: [{
 						required: true,
 						message: '请选择百分比',
 						trigger: 'blur'

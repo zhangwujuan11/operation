@@ -127,6 +127,7 @@
 			modify(n) {
 				this.dialogVisible = true
 				this.ruleForm=n
+				console.log(n)
 			},
 			// 分页
 			getData() {

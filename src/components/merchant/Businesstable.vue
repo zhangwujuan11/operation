@@ -92,7 +92,7 @@
 					</div>
 					<div class="chendiv">
 						<el-form-item label="商户登录名:" prop="username">
-							<el-input :disabled="true" type="text" v-model="ruleForm.username" placeholder='输入商户登录名称'></el-input>
+							<el-input  type="text" v-model="ruleForm.username" placeholder='输入商户登录名称'></el-input>
 						</el-form-item>
 				
 						<el-form-item label="支付后通知:"  prop="payNotifySelect">
@@ -164,7 +164,7 @@
 	// import Payment from '@/components/merchant/Payment.vue'
 	// import Channel from '@/components/merchant/Channel.vue'
 	// import {mchInfo,delmchInfo,updataInfo,infomch} from '@/utils/merchant.js'
-	import {mahinfoserchall,levitastid,resetlevtas,mchpay_infoset,tctcset,dellevtas,mchpay_infodel} from '@/utils/login.js'
+	import {mahinfoserchall,mahinfoserch,levitastid,resetlevtas,mchpay_infoset,tctcset,dellevtas,mchpay_infodel} from '@/utils/login.js'
 	export default {
 		inject:["reload"],
 		props:["channel","ccdatas","isvs","tcinfodata"],
@@ -214,12 +214,8 @@
 						required: true,
 						message: '请选择所属服务商',
 						trigger: 'change' 
-					}],
-					username:[{
-						required: true,
-						message: '请输入商户登录名',
-						trigger: 'bule' 
 					}]
+					
 				},
 				activeName: 'first',
 				// options: [],
@@ -241,7 +237,8 @@
 				// 个数选择器（可修改）
 				pageSizes: [1, 2, 3, 4],
 				// 默认每页显示的条数（可修改）
-				PageSize:8
+				PageSize:8,
+				isadmin:JSON.parse(localStorage.getItem('isadmin'))
 			}
 
 		},
@@ -250,10 +247,23 @@
 		// 	Channel
 		// },
 		created() {
-			mahinfoserchall(1).then(res=>{
-				this.tableData=res.data.data
-				this.totalCount=res.data.count
-			})
+			if(this.isadmin == '1'){
+				mahinfoserchall({
+					page:1
+				}).then(res=>{
+					this.tableData=res.data.data
+					this.totalCount=res.data.count
+				})
+			}else{
+				mahinfoserch({
+					page:1,
+					isv:JSON.parse(localStorage.getItem('isv-no'))
+				}).then(res=>{
+					this.tableData=res.data.data
+					this.totalCount=res.data.count
+				})
+			}
+			
 		},
 		methods: {
 			levellist(row,index){
@@ -271,6 +281,7 @@
 						 for (var i = 0; i < this.ruleForm.deviceIds.length; i++) {
 						 	arrayid.push(this.ruleForm.deviceIds[i].value.deviceId)
 						 }
+						 // console.log(this.ruleForm)
 						let obj = {
 							"createTime": this.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss"),
 							"deviceIds": JSON.stringify(arrayid),
@@ -285,35 +296,38 @@
 							"tid": this.ruleForm.tid,
 							"username": this.ruleForm.username,
 							"isvNo":this.ruleForm.isvNo,
-							"channelId":this.ruleForm.channelId
+							"channelId":this.ruleForm.channelId,
+							"pId":this.ruleForm.pId
 						}
-						let objj={}
-						if(this.ruleForm.channelId == "1"){
-							 objj = {
-							"username": this.ruleForm.username,
-							"merchantCode":this.ruleForm.mid,
-							"terminalCode": this.ruleForm.tid,
-							}
-						}else{
-							 objj = {
-							"username": this.ruleForm.username,
-							"mid": this.ruleForm.mid,
-							"tid": this.ruleForm.tid,
-							}
-						}
+						// let objj={}
+						// if(this.ruleForm.channelId == "1"){
+						// 	 objj = {
+						// 	"username": this.ruleForm.username,
+						// 	"merchantCode":this.ruleForm.mid,
+						// 	"terminalCode": this.ruleForm.tid,
+						// 	}
+						// }else{
+						// 	 objj = {
+						// 	"username": this.ruleForm.username,
+						// 	"mid": this.ruleForm.mid,
+						// 	"tid": this.ruleForm.tid,
+						// 	}
+						// }
 						resetlevtas(obj).then(()=>{
-							mchpay_infoset(objj).then(()=>{
-								// 同步到商户音箱信息表
-								for (var y = 0; y < arrayid.length; y++) {
-									tctcset({
-										"id": this.ruleForm.id,
-										"deviceId": arrayid[y],
-										"is_del": 0
-									})
-								}
-								this.$message.success("信息绑定成功")
+							this.$message.success("信息绑定成功")
 								this.reload()
-							})
+							// mchpay_infoset(objj).then(()=>{
+							// 	// 同步到商户音箱信息表
+							// 	for (var y = 0; y < arrayid.length; y++) {
+							// 		tctcset({
+							// 			"id": this.ruleForm.id,
+							// 			"deviceId": arrayid[y],
+							// 			"is_del": 0
+							// 		})
+							// 	}
+							// 	this.$message.success("信息绑定成功")
+							// 	this.reload()
+							// })
 						})
 			         } else {
 			           console.log('error submit!!');
@@ -332,53 +346,80 @@
 			// 修改
 			modify(n) {
 				this.dialogVisible = true
+				this.ruleForm=n
 				let numname=this.channel.findIndex((role) => role.id == n.channelId)
 				this.channelname=this.channel[numname].channelName
-				levitastid({
-					"channelId":n.channelId,
-					"username":n.username
-				}).then(res=>{
-					// console.log(res.data.data[0])
-					if(res.data.data[0].payBeforeText != null){
+				console.log(n)
+				this.valuett=n.mchName
+				
+				if(n.deviceIds != null){
+					let dev=JSON.parse(n.deviceIds)
+					let arrytc=[]
+					for(var i=0;i<dev.length;i++){
+						arrytc.push({
+						value:{
+							deviceId:dev[i]
+						}
+						})
+					}
+					this.ruleForm.deviceIds=arrytc
+					}
+					
+					
+				if(n.payNotifySelect != null){
+					this.ruleForm.payNotifySelect=JSON.parse(n.payNotifySelect)
+				}
+				
+				if(n.payBeforeText != null){
 						this.beforetext=true
 					}
-					if(res.data.data[0].isPayFailNotify == '1'){
+					if(n.isPayFailNotify == '1'){
 						this.isPayFailNotify=true
 					}else{
 						this.isPayFailNotify=false
 					}
-					this.valuett=res.data.data[0].mchName + '(' + res.data.data[0].tid + ')'
-					let obj={
-						"channelId":res.data.data[0].channelId,
-						"mchName":res.data.data[0].mchName,
-						"expireTime":res.data.data[0].expireTime,
-						"id":res.data.data[0].id,
-						"payBeforeText":res.data.data[0].payBeforeText,
-						"deviceIds":[],
-						"isvNo":res.data.data[0].isvNo,
-						"username":res.data.data[0].username,
-						"isPayFailNotify":res.data.data[0].isPayFailNotify,
-						"mid":res.data.data[0].mid,
-						"phone":res.data.data[0].phone,
-						"tid":res.data.data[0].tid,
-					}
-					// console.log(res.data.data[0].deviceIds)
-					if(res.data.data[0].payNotifySelect != null){
-						obj.payNotifySelect=JSON.parse(res.data.data[0].payNotifySelect)
-					}
-					if(res.data.data[0].deviceIds != null){
-						let dev=JSON.parse(res.data.data[0].deviceIds)
-						for(var i=0;i<dev.length;i++){
-							obj.deviceIds.push({
-							value:{
-								deviceId:dev[i]
-							}
-							})
-						}
-					}
-					this.ruleForm=obj
-					// console.log(obj)
-				})
+				// levitastid({
+				// 	"channelId":n.channelId,
+				// 	"username":n.username
+				// }).then(res=>{
+				// 	if(res.data.data[0].payBeforeText != null){
+				// 		this.beforetext=true
+				// 	}
+				// 	if(res.data.data[0].isPayFailNotify == '1'){
+				// 		this.isPayFailNotify=true
+				// 	}else{
+				// 		this.isPayFailNotify=false
+				// 	}
+				// 	this.valuett=res.data.data[0].mchName + '(' + res.data.data[0].tid + ')'
+				// 	let obj={
+				// 		"channelId":res.data.data[0].channelId,
+				// 		"mchName":res.data.data[0].mchName,
+				// 		"expireTime":res.data.data[0].expireTime,
+				// 		"id":res.data.data[0].id,
+				// 		"payBeforeText":res.data.data[0].payBeforeText,
+				// 		"deviceIds":[],
+				// 		"isvNo":res.data.data[0].isvNo,
+				// 		"username":res.data.data[0].username,
+				// 		"isPayFailNotify":res.data.data[0].isPayFailNotify,
+				// 		"mid":res.data.data[0].mid,
+				// 		"phone":res.data.data[0].phone,
+				// 		"tid":res.data.data[0].tid,
+				// 	}
+				// 	if(res.data.data[0].payNotifySelect != null){
+				// 		obj.payNotifySelect=JSON.parse(res.data.data[0].payNotifySelect)
+				// 	}
+				// 	if(res.data.data[0].deviceIds != null){
+				// 		let dev=JSON.parse(res.data.data[0].deviceIds)
+				// 		for(var i=0;i<dev.length;i++){
+				// 			obj.deviceIds.push({
+				// 			value:{
+				// 				deviceId:dev[i]
+				// 			}
+				// 			})
+				// 		}
+				// 	}
+				// 	this.ruleForm=obj
+				// })
 			},
 			// 删除
 			open(n) {
@@ -390,13 +431,15 @@
 					n.isDel=1
 					delete n.createTime
 					// console.log(n)
-					let objj={}				if(n.channelId == "1"){					 objj = {					"username": n.username,					"merchantCode":'',					"terminalCode":'',					}				}else{					 objj = {					"username": n.username,					"mid":'',					"tid":'',					}				}
+					let objj={}				// if(n.channelId == "1"){				// 	 objj = {				// 	"username": n.username,				// 	"merchantCode":'',				// 	"terminalCode":'',				// 	}				// }else{				// 	 objj = {				// 	"username": n.username,				// 	"mid":'',				// 	"tid":'',				// 	}				// }
 					dellevtas(n).then(res=>{
-						mchpay_infodel(objj).then(()=>{
-							this.$message.success('删除成功')
-							this.reload()
-						})
-						console.log(res)
+						this.$message.success('删除成功')
+						this.reload()
+						// mchpay_infodel(objj).then(()=>{
+						// 	this.$message.success('删除成功')
+						// 	this.reload()
+						// })
+						// console.log(res)
 					}).catch(()=>{
 						this.$message.error('删除失败')
 					})

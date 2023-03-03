@@ -7,7 +7,7 @@
 		</Travelpermit>
 		<div class="infobox">
 			<div class="inputBox">
-				<el-form :model="myForm"  ref="myForm">
+				<!-- <el-form :model="myForm"  ref="myForm">
 					<el-input placeholder="服务商号" v-model="myForm.isvNo"></el-input>
 					<el-input placeholder="服务商名称" v-model="myForm.isvName"></el-input>
 					<el-select placeholder="服务商状态" v-model="myForm.state">
@@ -18,11 +18,11 @@
 					      :value="item.value">
 					    </el-option>
 					</el-select>
-				</el-form>
+				</el-form> -->
 			</div>
 			<div class="btnbox">
-				<el-button type="primary" @click="serchdata">查询</el-button>
-				<el-button @click="resetForm()">重置</el-button>
+				<!-- <el-button type="primary" @click="serchdata">查询</el-button> -->
+				<!-- <el-button @click="resetForm()">重置</el-button> -->
 				<el-button type="primary" @click="dialogVisible=true">新建</el-button>
 			</div>
 			<Table></Table>
@@ -203,13 +203,12 @@
 			 submitForm(formName) {
 			        this.$refs[formName].validate((valid) => {
 			          if (valid) {
-						  let numsui=this.sjsz(9).join('')  
-							this.ruleForm.isv_no='V' + numsui
-						
-			            isvcreat(this.ruleForm).then(res=>{
+						let numsui=this.sjsz(9).join('')
+						this.ruleForm.isv_no='V' + numsui
+						isvcreat(this.ruleForm).then(res=>{
 							this.$message.success("新建成功");
 							this.reload()
-			            })
+						})  
 			          } else {
 			            console.log('error submit!!');
 			            return false;

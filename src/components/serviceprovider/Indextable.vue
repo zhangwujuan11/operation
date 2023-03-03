@@ -289,7 +289,7 @@
 			 paycon(n){
 				 this.paymentVisible=true
 				 this.paycode=n
-			 }
+			 },
 		},
 		watch: {
 			$route(n) {

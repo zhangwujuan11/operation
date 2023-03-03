@@ -11,24 +11,18 @@
 			
 			
 			
-			<el-menu-item index="/details">
-				<i class="el-icon-printer"></i>
-				<span slot="title">分润汇总</span>
-			</el-menu-item>
-			<el-menu-item index="/serviceprovider/share">
-				<i class="el-icon-pie-chart"></i>
-				<span slot="title">流水明细</span>
-			</el-menu-item>
+			
+			
 			<el-submenu index="2">
 				<template slot="title">
 					<i class="el-icon-user"></i>
 					<span>商户管理</span>
 				</template>
 				<el-menu-item-group >
-					<el-menu-item index="/merchant/index">
+					<!-- <el-menu-item index="/merchant/index">
 						<i class="el-icon-menu"></i>
 						应用列表
-					</el-menu-item>
+					</el-menu-item> -->
 					<el-menu-item index="/merchant/businesslist">
 						<i class="el-icon-s-finance"></i>
 						商户列表
@@ -54,29 +48,54 @@
 							<i class="el-icon-map-location"></i>
 							渠道信息配置
 						</el-menu-item>
-						<el-menu-item index="/mchinfos/benefi" v-if="isadmin == 1">
-							<i class="el-icon-map-location"></i>
+						<!-- <el-menu-item index="/mchinfos/benefi" v-if="isadmin == 1">
+							<i class="el-icon-s-marketing"></i>
 							服务商收益定义
-						</el-menu-item>
+						</el-menu-item> -->
 					</el-submenu>
 				</el-menu-item-group>
 			</el-submenu>
-			<el-submenu index="3">
+			
+			<el-submenu index="5">
+				<template slot="title">
+					<i class="el-icon-guide"></i>
+					<span>分润管理</span>
+				</template>
+				<el-menu-item-group>
+					<el-menu-item index="/details">
+						<i class="el-icon-printer"></i>
+						<span slot="title">分润汇总</span>
+					</el-menu-item>
+					<el-menu-item index="/serviceprovider/share">
+						<i class="el-icon-pie-chart"></i>
+						<span slot="title">流水明细</span>
+					</el-menu-item>
+					<el-menu-item index="/serviceprovider/exhibition" v-if="isadmin == 0">
+						<i class="el-icon-chat-line-square"></i>
+						分润展示
+					</el-menu-item>
+					<el-menu-item index="/details/cash" v-if="isadmin == 1">
+						<i class="el-icon-chat-line-square"></i>
+						分润提现
+					</el-menu-item>
+				</el-menu-item-group>
+			</el-submenu>
+			
+			
+			
+			
+			<el-submenu index="3" v-if="isadmin == 1">
 				<template slot="title">
 					<i class="el-icon-money"></i>
 					<span>服务商管理</span>
 				</template>
 				<el-menu-item-group>
 					<el-menu-item index="/serviceprovider">
-						<i class="el-icon-document"></i>
+						<i class="el-icon-thumb"></i>
 						服务商列表
 					</el-menu-item>
-					<el-menu-item index="">
-						<i class="el-icon-document"></i>
-						分润管理
-					</el-menu-item>
-					<el-menu-item index="/mchinfos/benefitdefinition" v-if="isadmin == 1">
-						<i class="el-icon-document"></i>
+					<el-menu-item index="/mchinfos/benefitdefinition">
+						<i class="el-icon-mouse"></i>
 						服务商收益配置
 					</el-menu-item>
 				</el-menu-item-group>
@@ -105,7 +124,9 @@
 					</el-menu-item>
 				</el-menu-item-group>
 			</el-submenu>
-			<el-submenu index="5">
+			
+			
+			<!-- <el-submenu index="5">
 				<template slot="title">
 					<i class="el-icon-guide"></i>
 					<span>支付配置</span>
@@ -120,7 +141,7 @@
 						支付方式
 					</el-menu-item>
 				</el-menu-item-group>
-			</el-submenu>
+			</el-submenu> -->
 			<el-submenu index="6" v-if="isadmin == 1">
 				<template slot="title">
 					<i class="el-icon-setting"></i>
